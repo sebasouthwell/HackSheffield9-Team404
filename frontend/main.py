@@ -1,30 +1,39 @@
 import streamlit as st
+import requests
 
-
+url = 'http://localhost:5000'
 
 # Title of the app
 st.title('Simple Streamlit App')
 
-col1, col2, col3 = st.columns(3)
+images = {"Image 1": "images/base_image_1.png", "Image 2": "images/base_image_2.jpg", "Image 3": "images/base_image_3.jpg"}
 
-# Images
-with col1:
-    image_1 = st.image("images/base_image_1.png", caption="Image 1", width=200)
+cols = st.columns(len(images))
 
-with col2:
-    image_2 = st.image("images/base_image_2.jpg", caption="Image 2", width=200)
-
-with col3:
-    image_3 = st.image("images/base_image_3.jpg", caption="Image 3", width=200)
+for index, col in enumerate(cols):
+    with col:
+        key = list(images.keys())[index]
+        value = images[key]
+        st.image(value, caption=key, width=200)
 
 # Choose base image
-choice = st.radio("What image do you want to choose as a base?", ["Image 1", "Image 2", "Image 3"])
+choice = st.radio("What image do you want to choose as a base?", list(images.keys()))
+
+st.write("Or choose your own image below")
+
+uploaded_file = st.file_uploader("Choose a file")
 
 send_button = st.button("Send image button", type="primary")
 
-if send_button:
-    print(f"Image chosen: {choice}")
-    print("Send image to api server")
+if send_button:    
+    get_image_url = f"{url}/api/backend/get_image"
+
+    if uploaded_file is not None:
+        files = {'media': uploaded_file}
+    else:
+        files = {'media': open(images[choice], 'rb')}
+
+    requests.post(get_image_url, files=files)
 
 st.write("Image Generated Below")
 
