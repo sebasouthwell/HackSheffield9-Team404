@@ -1,5 +1,7 @@
 import streamlit as st
 
+
+
 # Title of the app
 st.title('Simple Streamlit App')
 
@@ -33,5 +35,4 @@ if ready:
     print("Ready")
 else:
     placeholder = st.image("images/placeholder.png", caption="Placeholder Image", width=500)
-
 
