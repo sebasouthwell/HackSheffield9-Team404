@@ -11,7 +11,7 @@ st.write()
 gen_choice = st.radio("How do you want to generate your image? Text or Base Image?", ["Text", "Image"])
 
 if gen_choice == "Text":
-    promt = st.text_input("Promt?")
+    prompt = st.text_input("prompt?")
 
 elif gen_choice == "Image":
     images = {"Image 1": "images/base_image_1.png", "Image 2": "images/base_image_2.jpg", "Image 3": "images/base_image_3.jpg"}
@@ -36,7 +36,7 @@ send_button = st.button("Send image button", type="primary")
 if send_button:
     if gen_choice == "Text":
         get_image_url = f"{url}/api/backend/get_text"
-        requests.post(get_image_url, data=promt)
+        requests.post(get_image_url, data=prompt)
 
     elif gen_choice == "Image":
         get_image_url = f"{url}/api/backend/get_image"
