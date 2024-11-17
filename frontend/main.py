@@ -15,7 +15,6 @@ if gen_choice == "Text":
 
 elif gen_choice == "Image":
     images = {"Image 1": "images/base_image_1.png", "Image 2": "images/base_image_2.jpg", "Image 3": "images/base_image_3.jpg"}
-
     cols = st.columns(len(images))
 
     for index, col in enumerate(cols):
@@ -34,18 +33,25 @@ elif gen_choice == "Image":
 send_button = st.button("Send image button", type="primary")
 
 if send_button:
+    headers = {'Content-type': 'application/json; image/*'}
+
     if gen_choice == "Text":
-        get_image_url = f"{url}/api/backend/get_text"
-        requests.post(get_image_url, data=prompt)
+        get_image_url = f"{url}/prompt_text"
+        prompt_body = {"prompt": prompt }
+        requests.post(get_image_url, json=prompt_body)
 
     elif gen_choice == "Image":
-        get_image_url = f"{url}/api/backend/get_image"
 
         if uploaded_file is not None:
             files = {'media': uploaded_file}
         else:
             files = {'media': open(images[choice], 'rb')}
+        
+        get_image_url = f"{url}/prompt_text"
+        prompt_body = {"prompt": "A picture of nature" }
+        requests.post(get_image_url, json=prompt_body)
 
+        get_image_url = f"{url}/prompt_image"
         requests.post(get_image_url, files=files)
 
 st.write("Image Generated Below")

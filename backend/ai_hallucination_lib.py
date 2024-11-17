@@ -23,7 +23,7 @@ def loadDotEnv(env = "./.env"):
 
 class DataBricksManager:
     def __init__(self):
-        self.chat_model = model = ChatDatabricks(
+        self.chat_model =  ChatDatabricks(
                 endpoint="databricks-meta-llama-3-1-70b-instruct",
                 temperature=0.1,
                 max_tokens=250,
@@ -41,7 +41,7 @@ class DataBricksManager:
     
 
 class DallEHandler:
-    def __init__(self,stable_prompt: str,  x_replace_prop: float, y_replace_prop: float, last_image = None):
+    def __init__(self, stable_prompt: str,  x_replace_prop: float, y_replace_prop: float, last_image = None):
         self.openai = OpenAI()
         self.x_replace_prop = 0.2
         self.y_replace_prop = 0.2
@@ -64,7 +64,7 @@ class DallEHandler:
         return out #return bytes
     
 
-    def img_bytes(self,im : Image, scale:float) -> bytes:
+    def img_bytes(self, im : Image, scale:float) -> bytes:
         #image setup
         img = im.resize(size=(int(im.width*scale), int(im.height*scale)))
 
@@ -94,8 +94,6 @@ class DallEHandler:
 
     def get_image(self, image_url):
         return Image.open(requests.get(image_url, stream=True).raw)
-    
-
 
     # So we take an image of size nxm
     # We create an identical image, and copy the original image onto the new image at the offset (x,y)
