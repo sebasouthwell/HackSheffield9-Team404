@@ -1,20 +1,26 @@
-from flask import Flask, Blueprint
-from api.endpoints import backend_api 
+# Create a flask app and define the routes
+
+from urllib import request
+from flask import Flask
+from ai_hallucination_lib import *
+test = DataBricksManager()
 
 
-# Define the main API Blueprint without static and template folders
-api_bp = Blueprint('api', __name__, url_prefix='/api')
+@app.route('/image', methods=['GET'])
+def get_image():
+    # Get query parameters
+    x = request.args.get('x')
+    y = request.args.get('y')
 
-# Register each endpoint Blueprint(endpoint we create)
-api_bp.register_blueprint(backend_api.backend_api)
-    
-def create_app():
-    # Correct the path for static_folder
-    app = Flask(__name__, template_folder='templates', static_folder='static')
-    app.register_blueprint(api_bp)
+@app.route('/prompt', methods=['GET'])
+def get_prompt():
+    # Get query parameters
+    prompt = request.args.get('prompt')
+    res = test.chain.invoke(prompt)
 
-    return app
+
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    loadDotEnv()
+    app = Flask(__name__)
+    app.run(debug=True)

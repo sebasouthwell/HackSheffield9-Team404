@@ -6,3 +6,5 @@ backend_api = Blueprint('media', __name__, url_prefix='/backend')
 def get_image():
     imagefile = request.files.get('media')
     return f"Got {imagefile.filename}"
+
+
