@@ -16,7 +16,10 @@ def get_prompt_text():
     prompt = request.json['prompt']
     print(prompt)
     if prompt is not None:
-        dalleHandler.stable_prompt = prompt
+        dalleHandler.stable_prompt = databricksHandler.chain.invoke({
+            "prompt": prompt,
+            "context": ""
+        }).content
     
     return "OK"
 
@@ -34,8 +37,9 @@ def get_prompt_image():
 def get_image():
     x = request.args.get('x')
     y = request.args.get('y')
-    original_image_file =  Image.open("output.png", stream=True).raw
-    new_image_file = dalleHandler.generate_new_region(original_image_file, x, y)
+    if dalleHandler.last_image is None:
+        dalleHandler.generate_new_image()
+    new_image_file = dalleHandler.generate_new_region(dalleHandler.last_image, x, y)
     dalleHandler.image_to_vasd_format(image=new_image_file, image_path="output_vasd")
     with open("output_vasd", "r") as f:
         output = f.read()
