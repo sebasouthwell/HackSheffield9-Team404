@@ -35,8 +35,9 @@ def get_prompt_image():
 # Get Image as VASD format
 @app.route('/image', methods=['GET'])
 def get_image():
-    x = request.args.get('x')
-    y = request.args.get('y')
+    x = int(request.args.get('x'))
+    y = int(request.args.get('y'))
+
     if dalleHandler.last_image is None:
         dalleHandler.generate_new_image()
     new_image_file = dalleHandler.generate_new_region(dalleHandler.last_image, x, y)
