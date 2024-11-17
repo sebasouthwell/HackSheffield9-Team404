@@ -15,8 +15,8 @@ dalle_3_size = 1024
 
 max_val = 4096/2
 
-def loadDotEnv():
-    with open("./.env", "r") as f:
+def loadDotEnv(env = "./.env"):
+    with open(env, "r") as f:
         for line in f:
             key, value = line.strip().split("=")
             os.environ[key] = value
